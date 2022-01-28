@@ -1,0 +1,18 @@
+﻿@page "/counter"
+
+<PageTitle>Counter</PageTitle>
+<h1>Counter</h1>
+<Hook>
+    @{
+        var (currentCount, setCount) = context.UseState(1);
+        var (message, setMessage) = context.UseState<string>("Click me");
+        
+        <p>
+            <input class="form-control" type="text" @onchange=@(args => setMessage(args.Value!.ToString()!)) />
+        </p>
+
+        <p role="status">Current count: @currentCount</p>
+        <button class="btn btn-primary" @onclick=@(() => setCount(currentCount + 1))>@message</button>
+        <button class="btn btn-primary" @onclick=@(() => setCount(1))>Reset</button>
+    }
+</Hook>

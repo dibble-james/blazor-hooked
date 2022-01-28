@@ -1,0 +1,6 @@
+@code {
+    [Parameter, EditorRequired]
+    public RenderFragment<HookContext>? ChildContent { get; init; }
+}
+
+@ChildContent!(this.context)
