@@ -1,9 +1,9 @@
 namespace BlazorHooked;
 
+public delegate void SetState<T>(T newValue, bool forceUpdate = false);
+
 public partial class Hook
 {
-    public delegate void SetState<T>(T newValue, bool forceUpdate = false);
-
     private readonly HookContext context;
 
     public Hook() => this.context = new HookContext(this);
@@ -24,6 +24,8 @@ public partial class Hook
 
         public HookContext(Hook hook) => this.hook = hook;
 
+        public bool ForcedUpdate { get; private set; }
+
         public (T? state, SetState<T> setState) UseState<T>(T initialValue)
         {
             if (this.initialValuesCaptured)
@@ -40,9 +42,10 @@ public partial class Hook
             return (initialValue, this.SetState<T>(index));
         }
 
-        public void StateCaptured()
+        internal void StateCaptured()
         {
             this.initialValuesCaptured = true;
+            this.ForcedUpdate = false;
             this.renderStates = new Queue<KeyValuePair<int, object?>>(this.states);
         }
 
@@ -54,6 +57,7 @@ public partial class Hook
 
             if (forceUpdate)
             {
+                this.ForcedUpdate = true;
                 this.hook.StateHasChanged();
             }
         };

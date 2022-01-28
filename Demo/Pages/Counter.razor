@@ -6,13 +6,29 @@
     @{
         var (currentCount, setCount) = context.UseState(1);
         var (message, setMessage) = context.UseState<string>("Click me");
-        
+
         <p>
-            <input class="form-control" type="text" @onchange=@(args => setMessage(args.Value!.ToString()!)) />
+            <label class="form-label">Button Text</label>
+            <input class="form-control" type="text" @onkeyup=@(args => setMessage(message + args.Key)) />
         </p>
+
+        if (currentCount % 5 == 0 && !context.ForcedUpdate)
+        {
+            setMessage("x5", true);
+        }
 
         <p role="status">Current count: @currentCount</p>
         <button class="btn btn-primary" @onclick=@(() => setCount(currentCount + 1))>@message</button>
-        <button class="btn btn-primary" @onclick=@(() => setCount(1))>Reset</button>
+        <button class="btn btn-primary" @onclick=@Reset(setMessage, setCount)>Reset</button>
     }
 </Hook>
+
+@code {
+    string buttonText = "Click me";
+
+    Action Reset(SetState<string> setMessage, SetState<int> setCount) => () =>
+    {
+        setMessage("Click me");
+        setCount(1);
+    };
+}
