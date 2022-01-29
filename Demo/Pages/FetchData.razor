@@ -9,40 +9,50 @@
 
 <p>This component demonstrates fetching data from a service.</p>
 
-@if (forecasts == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
+<Loader Load=@Loader T="WeatherForecast[]">
+    <Loading>
+        <p><em>Loading...</em></p>
+    </Loading>
+    <Loaded Context="forecasts">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
+                    <th>Date</th>
+                    <th>Temp. (C)</th>
+                    <th>Temp. (F)</th>
+                    <th>Summary</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
+            </thead>
+            <tbody>
+                @foreach (var forecast in forecasts)
+                {
+                    <tr>
+                        <td>@forecast.Date.ToShortDateString()</td>
+                        <td>@forecast.TemperatureC</td>
+                        <td>@forecast.TemperatureF</td>
+                        <td>@forecast.Summary</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Loaded>
+    <Failed>
+        <p><em>Uhoh...</em></p>
+    </Failed>
+</Loader>
 
 @code {
-    private WeatherForecast[]? forecasts;
-
-    protected override async Task OnInitializedAsync()
+    private async void Loader(Dispatch dispatch)
     {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        try
+        {
+            var forcasts = await this.ForecastService.GetForecastAsync(DateTime.Now);
+
+            dispatch(new Loaded<WeatherForecast[]>(forcasts));
+        }
+        catch (Exception ex)
+        {
+            dispatch(new Failed<WeatherForecast[]>(ex));
+        }
     }
 }

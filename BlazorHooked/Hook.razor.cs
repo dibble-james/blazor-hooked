@@ -1,65 +1,18 @@
 namespace BlazorHooked;
 
-public delegate void SetState<T>(T newValue, bool forceUpdate = false);
-
 public partial class Hook
 {
     private readonly HookContext context;
 
-    public Hook() => this.context = new HookContext(this);
+    public Hook() => this.context = new HookContext(this.StateHasChanged);
 
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
 
-        this.context.StateCaptured();
-    }
-
-    public class HookContext
-    {
-        private readonly Hook hook;
-        private readonly Dictionary<int, object?> states = new();
-        private Queue<KeyValuePair<int, object?>> renderStates = new();
-        private bool initialValuesCaptured;
-
-        public HookContext(Hook hook) => this.hook = hook;
-
-        public bool ForcedUpdate { get; private set; }
-
-        public (T? state, SetState<T> setState) UseState<T>(T initialValue)
+        if (firstRender)
         {
-            if (this.initialValuesCaptured)
-            {
-                var state = this.renderStates.Dequeue();
-
-                return ((T?)state.Value, this.SetState<T>(state.Key));
-            }
-
-            var index = this.states.Count;
-
-            this.states.Add(index, initialValue);
-
-            return (initialValue, this.SetState<T>(index));
+            this.context.RunEffects();
         }
-
-        internal void StateCaptured()
-        {
-            this.initialValuesCaptured = true;
-            this.ForcedUpdate = false;
-            this.renderStates = new Queue<KeyValuePair<int, object?>>(this.states);
-        }
-
-        private SetState<T> SetState<T>(int index) => (newState, forceUpdate) =>
-        {
-            this.states[index] = newState;
-
-            this.renderStates = new Queue<KeyValuePair<int, object?>>(this.states);
-
-            if (forceUpdate)
-            {
-                this.ForcedUpdate = true;
-                this.hook.StateHasChanged();
-            }
-        };
     }
 }

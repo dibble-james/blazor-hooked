@@ -1,0 +1,37 @@
+﻿@typeparam T
+
+@code {
+    [Parameter, EditorRequired]
+    public RenderFragment<bool>? Loading { get; init; }
+
+    [Parameter, EditorRequired]
+    public RenderFragment<T?>? Loaded { get; init; }
+
+    [Parameter, EditorRequired]
+    public RenderFragment<Exception?>? Failed { get; init; }
+
+    [Parameter, EditorRequired]
+    public Action<Dispatch>? Load { get; init; }
+}
+
+<Hook>
+    @{
+        var (state, dispatch) = context.UseLoaderReducer<T>();
+        context.UseEffect(() => Load!(dispatch));
+
+        if (state!.Loading)
+        {
+            @Loading!(true)
+        }
+
+        if (state!.TryGetResult(out var result))
+        {
+            @Loaded!(result)
+        }
+
+        if (state!.TryGetFailure(out var failure))
+        {
+            @Failed!(failure)
+        }
+    }
+</Hook>
