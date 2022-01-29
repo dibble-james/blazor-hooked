@@ -1,25 +1,27 @@
 namespace BlazorHooked;
 
-public partial class Hook
+public partial class Hook : IAsyncDisposable
 {
     private readonly HookContext context;
 
     public Hook() => this.context = new HookContext(this.StateHasChanged);
 
-    protected override void OnParametersSet()
+    protected override async Task OnParametersSetAsync()
     {
-        base.OnParametersSet();
+        await base.OnParametersSetAsync();
 
-        this.context.RunEffects();
+        await this.context.RunEffects();
     }
 
-    protected override void OnAfterRender(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        base.OnAfterRender(firstRender);
+        await base.OnAfterRenderAsync(firstRender);
 
-        if (firstRender)
-        {
-            this.context.RunEffects();
-        }
+        await this.context.RunEffects();
+    }
+
+    public ValueTask DisposeAsync()
+    {
+        return ((IAsyncDisposable)context).DisposeAsync();
     }
 }
