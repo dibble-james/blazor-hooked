@@ -9,11 +9,21 @@ public static class LoaderReducer
 
     private static LoaderState<T> Reducer<T>(LoaderState<T> state, object action) => action switch
     {
-        Loaded<T> loaded => state with { Loading = false, Result = loaded.Result },
-        Failed<T> failed => state with { Loading = false, Failure = failed.Failure },
+        LoaderActions.Load => state with { Loading = true, Result = default, Failure = null },
+        LoaderActions.Loaded<T> loaded => state with { Loading = false, Result = loaded.Result },
+        LoaderActions.Failed failed => state with { Loading = false, Failure = failed.Failure },
         _ => state
     };
 
+}
+
+public static class LoaderActions
+{
+    public record Load();
+
+    public record Loaded<T>(T Result);
+
+    public record Failed(Exception Failure);
 }
 
 public record LoaderState<T>(bool Loading, T? Result, Exception? Failure)
@@ -44,7 +54,3 @@ public record LoaderState<T>(bool Loading, T? Result, Exception? Failure)
         return true;
     }
 }
-
-public record Loaded<T>(T Result);
-
-public record Failed<T>(Exception Failure);

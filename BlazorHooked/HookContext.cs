@@ -12,7 +12,8 @@ public delegate T Reducer<T>(T state, object action);
 public class HookContext
 {
     private readonly ConcurrentDictionary<int, object?> states = new();
-    private readonly ConcurrentDictionary<int, Action> effects = new();
+    private readonly ConcurrentDictionary<int, (Action Effect, object[] Dependencies)> effects = new();
+    private readonly ConcurrentQueue<Action> effectQueue = new();
     private readonly Action stateHasChanged;
 
     public HookContext(Action stateHasChanged) => this.stateHasChanged = stateHasChanged;
@@ -24,11 +25,33 @@ public class HookContext
         => ((T?)this.states.GetOrAdd(caller, initialState), this.Dispatch(caller, reducer));
 
     public void UseEffect(Action effect, [CallerLineNumber] int caller = 0)
-        => this.effects.TryAdd(caller, effect);
+        => this.UseEffect(effect, Array.Empty<object>(), caller);
+
+    public void UseEffect(Action effect, object[] dependecies, [CallerLineNumber] int caller = 0)
+    {
+        if (!this.effects.TryGetValue(caller, out var registeredEffect))
+        {
+            if (this.effects.TryAdd(caller, (effect, dependecies)))
+            {
+                this.effectQueue.Enqueue(effect);
+            }
+            
+            return;
+        }
+
+        if (!dependecies.Zip(registeredEffect.Dependencies).Any(z => z.First != z.Second))
+        {
+            return;
+        }
+
+        this.effects[caller] = (effect, dependecies);
+
+        this.effectQueue?.Enqueue(effect);
+    }
 
     internal void RunEffects()
     {
-        foreach (var effect in this.effects.Values)
+        while (this.effectQueue.TryDequeue(out var effect))
         {
             effect();
         }

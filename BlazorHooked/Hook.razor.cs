@@ -6,6 +6,13 @@ public partial class Hook
 
     public Hook() => this.context = new HookContext(this.StateHasChanged);
 
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        this.context.RunEffects();
+    }
+
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);

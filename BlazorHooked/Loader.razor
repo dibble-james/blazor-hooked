@@ -2,24 +2,31 @@
 
 @code {
     [Parameter, EditorRequired]
+    public Action<Dispatch>? Load { get; init; }
+
+    [Parameter]
     public RenderFragment<bool>? Loading { get; init; }
 
     [Parameter, EditorRequired]
     public RenderFragment<T?>? Loaded { get; init; }
 
-    [Parameter, EditorRequired]
+    [Parameter]
     public RenderFragment<Exception?>? Failed { get; init; }
 
-    [Parameter, EditorRequired]
-    public Action<Dispatch>? Load { get; init; }
+    [Parameter]
+    public object[]? Dependencies { get; init; }
 }
 
 <Hook>
     @{
         var (state, dispatch) = context.UseLoaderReducer<T>();
-        context.UseEffect(() => Load!(dispatch));
+        context.UseEffect(() =>
+        {
+            dispatch(new LoaderActions.Load());
+            Load!(dispatch);
+        }, Dependencies ?? Array.Empty<object>());
 
-        if (state!.Loading)
+        if (state!.Loading && this.Loading is not null)
         {
             @Loading!(true)
         }
@@ -29,7 +36,7 @@
             @Loaded!(result)
         }
 
-        if (state!.TryGetFailure(out var failure))
+        if (state!.TryGetFailure(out var failure) && this.Failed is not null)
         {
             @Failed!(failure)
         }
