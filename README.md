@@ -127,3 +127,35 @@ That's obviously a trivial example, but it gives you the idea of all you need. A
     }
 }
 ```
+
+### `UseEffect`
+Effects are used to start background tasks and clean up after them when they're finished with.  The classic example would be to start listening on a websocket when the component is first rendered, then gracefully shutdown the connection when the component is unmounted and disposed.  If your Effect uses a variable like a value from `UseState` or a component paramenter and you'd like the Effect to re-run when that changes, you define that variable as a Dependency by letting `UseEffect` track it's value when you request it.
+
+```
+@inject WebSocketService UserNotificationService
+
+@code {
+    [Parameter]
+    public Guid UseId { get; set; }
+
+    public Func<Func<Task>> ListenForUserNotifications(SetState<string[]> setUserMessages) => async () =>
+    {
+        await UserNotificationService.StartListening(UserId, setUserMessages);
+
+        return async () => await UserNotificationService.StopListening(UserId);
+    };
+}
+
+<Hook>
+    @{
+        var (messages, setMessages) = context.UseState(new string[0]);
+
+        context.UseEffect(ListenForUserNotifications(setMessages), new object[] { this.UserId });
+    }
+
+    @foreach(var message in messages)
+    {
+        <p>@message</p>
+    }
+</Hook>
+```

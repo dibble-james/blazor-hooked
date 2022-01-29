@@ -1,19 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+	<PropertyGroup>
+		<PackageId>BlazorHooked</PackageId>
+		<Authors>James Dibble</Authors>
+		<RepositoryUrl>https://github.com/dibble-james/blazor-hooked</RepositoryUrl>
+		<PackageLicenseUrl>https://raw.githubusercontent.com/dibble-james/blazor-hooked/main/LICENSE</PackageLicenseUrl>
+		<PackageTags>blazor redux flux hooks state-management</PackageTags>
+		<Description>A minimal boiler-plate, state management framework for Blazor that resembles React Hooks.</Description>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
 
 
-  <ItemGroup>
-    <SupportedPlatform Include="browser" />
-  </ItemGroup>
+	<ItemGroup>
+		<SupportedPlatform Include="browser" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.1" />
-    <PackageReference Include="oneof" Version="3.0.205" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.*" />
+		<PackageReference Include="oneof" Version="3.0.*" />
+	</ItemGroup>
 
 </Project>
