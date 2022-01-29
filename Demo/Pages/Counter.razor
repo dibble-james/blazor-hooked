@@ -1,27 +1,42 @@
 ﻿@page "/counter"
 
 <PageTitle>Counter</PageTitle>
-<h1>Counter</h1>
+<h1>Counter with <code>UseState</code></h1>
 <Hook>
     @{
-        var (currentCount, setCount) = context.UseState(1);
-        var (message, setMessage) = context.UseState<string>("Click me");
-
-        <p>
-            <label class="form-label">Button Text</label>
-            <input class="form-control" type="text" @onkeyup=@(args => setMessage(message + args.Key)) />
-        </p>
-
-        <p role="status">Current count: @currentCount</p>
-        <button class="btn btn-primary" @onclick=@(() => setCount(currentCount + 1))>@message</button>
-        <button class="btn btn-primary" @onclick=@Reset(setMessage, setCount)>Reset</button>
+        var (count, setCount) = context.UseState(0);
     }
+
+    <p>Count: @count</p>
+    <p>
+        <button @onclick=@(() => setCount(count + 1))>Up</button>
+        <button @onclick=@(() => setCount(count - 1))>Down</button>
+    </p>
 </Hook>
 
+<h1>Counter with <code>UseReducer</code></h1>
 @code {
-    Action Reset(SetState<string> setMessage, SetState<int> setCount) => () =>
+    public record CounterState(int Count);
+
+    public record Increment();
+    public record Decrement();
+
+    private CounterState Reducer(CounterState state, object action) => action switch
     {
-        setMessage("Click me");
-        setCount(1);
+        Increment => state with { Count = state.Count + 1 },
+        Decrement => state with { Count = state.Count - 1 },
+        _ => state,
     };
 }
+
+<Hook>
+    @{
+        var (state, dispatch) = context.UseReducer(Reducer, new CounterState(0));
+    }
+
+    <p>Count: @state!.Count</p>
+    <p>
+        <button @onclick=@(() => dispatch(new Increment()))>Up</button>
+        <button @onclick=@(() => dispatch(new Decrement()))>Down</button>
+    </p>
+</Hook>
