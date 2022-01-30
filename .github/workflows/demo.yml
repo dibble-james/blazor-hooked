@@ -29,7 +29,7 @@ jobs:
       - name: Add files required for pages
         run: cp release/wwwroot/index.html release/wwwroot/404.html;touch release/wwwroot/.nojekyll
       - name: Publish to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@3
+        uses: JamesIves/github-pages-deploy-action@v4.2.2
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
