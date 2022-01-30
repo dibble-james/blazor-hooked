@@ -26,7 +26,7 @@ jobs:
         run: dotnet publish Demo.csproj -c Release -o publish --nologo --no-restore
       - name: Update for GH Pages
         run: |
-          sed -i 's/<base href="\/" \/>/<base href="\/blazorhooked\/" \/>/g' publish/wwwroot/index.html
+          sed -i 's/<base href="\/" \/>/<base href="\/blazor-hooked\/" \/>/g' publish/wwwroot/index.html
           cp publish/wwwroot/index.html publish/wwwroot/404.html
           touch publish/wwwroot/.nojekyll
       - name: Publish to GitHub Pages
