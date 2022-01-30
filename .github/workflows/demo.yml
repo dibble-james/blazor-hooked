@@ -34,4 +34,4 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
           branch: gh-pages
-          folder: publish/wwwroot
+          folder: Demo/publish/wwwroot
