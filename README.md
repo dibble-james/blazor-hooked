@@ -1,12 +1,11 @@
 # Hooked on Blazor
 [![Nuget](https://github.com/dibble-james/blazor-hooked/actions/workflows/nuget.yml/badge.svg)](https://github.com/dibble-james/blazor-hooked/actions/workflows/nuget.yml)
-[![NuGet Status](https://badgen.net/nuget/v/BlazorHooked)](https://www.nuget.org/packages/BlazorHooked/)
 
 A minimal boiler-plate, state management framework for Blazor that resembles React Hooks. It also enables a slightly more functional approach to Blazor components by being a bit more forceful with immutability.
 
 ## Installation
-
-TODO: Publish to Nuget
+Install from Nuget 
+[![NuGet Status](https://badgen.net/nuget/v/BlazorHooked)](https://www.nuget.org/packages/BlazorHooked/)
 
 Add the obligitory using statement to `_Imports.razor` if you don't want `@using`s in every component.
 

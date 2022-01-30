@@ -5,6 +5,7 @@
 		<Authors>James Dibble</Authors>
 		<RepositoryUrl>https://github.com/dibble-james/blazor-hooked</RepositoryUrl>
 		<PackageTags>blazor redux flux hooks state-management</PackageTags>
+		<PackageProjectUrl>https://dibble-james.github.io/blazor-hooked/</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
   		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<Description>A minimal boiler-plate, state management framework for Blazor that resembles React Hooks.</Description>
