@@ -23,7 +23,7 @@ jobs:
         run: |
           echo "ref: $GITHUB_REF"
           echo "tag: ${GITHUB_REF/refs\/tags\//}"
-          version=$([[ "$GITHUB_REF" == *"/refs/tags/"* ]] && echo ${GITHUB_REF/refs\/tags\//} || echo "1.0.0")
+          version=$([[ "$GITHUB_REF" == *"refs/tags/"* ]] && echo ${GITHUB_REF/refs\/tags\//} || echo "1.0.0")
           echo $version
           echo ::set-output name=VERSION::$version
       - name: Setup .NET
