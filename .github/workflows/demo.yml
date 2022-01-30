@@ -1,0 +1,37 @@
+name: Deploy to GitHub Pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    tags: "*"
+  pull_request:
+    branches: [main]
+
+jobs:
+  deploy-to-github-pages:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Demo
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Publish .NET Core Project
+        run: dotnet publish Demo.csproj -c Release -o publish --nologo --no-restore
+      - name: Change base ref
+        run: sed -i 's/<base href="\/" \/>/<base href="\/blazorhooked\/" \/>/g' publish/wwwroot/index.html
+      - name: Add files required for pages
+        run: cp release/wwwroot/index.html release/wwwroot/404.html;touch release/wwwroot/.nojekyll
+      - name: Publish to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@3
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: publish/wwwroot
