@@ -1,0 +1,39 @@
+name: Nuget
+
+on:
+  workflow_dispatch:    
+  push:
+    branches: [ main ]
+    tags: "*"
+    paths: BlazorHooked/**
+  pull_request:
+    branches: [ main ]
+    paths: BlazorHooked/**
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: BlazorHooked
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions-ecosystem/action-get-latest-tag@v1
+      id: tag
+      with:
+        initial_version: 0.1.0
+        with_initial_version: true
+        semver_only: true
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Pack
+      run: dotnet pack --no-restore -c release --include-symbols /p:Version=${{ steps.tag.outputs.tag }}
+    - name: Push
+      if: github.ref_type == 'tag'
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+      run: dotnet nuget push **/*.nupkg -s https://api.nuget.org/v3/index.json -k "$NUGET_API_KEY"
