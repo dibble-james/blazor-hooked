@@ -1,9 +1,20 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Blazor Hooked</PageTitle>
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
+<p class="display-1 text-center">Blazor Hooked</p>
+<div class="card text-white bg-dark text-center">
+    <div class="card-body">
+        <p class="lead">
+            A minimal boiler-plate, state management framework for Blazor that resembles React Hooks. It also enables a slightly more functional approach to Blazor components by being a bit more forceful with immutability.
+        </p>
+    </div>
+</div>
+<h3>Installation</h3>
+<p>
+    Install from Nuget
+    <a href="https://www.nuget.org/packages/BlazorHooked/" rel="noopener noreferrer nofollow"><img src="https://badgen.net/nuget/v/BlazorHooked" alt="NuGet Status"></a>
+</p>
+<p>Add the obligitory using statement to <code>_Imports.razor</code> if you don't want <code>@@using</code>s in every component.</p>
+<pre>@@using BlazorHooked</pre>
+<BSLink href="fundementals" IsButton="true" Color="BSColor.Primary">Get Started</BSLink>

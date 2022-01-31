@@ -1,17 +1,28 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<BSNavbar IsHeader="true" IsDark="true">
+    <BSContainer Container="Container.Fluid">
+        <BSNavbarBrand>Blazor Hooked</BSNavbarBrand>
+        <BSCollapse IsInNavbar="true">
+            <Toggler>
+                <BSNavbarToggle/>
+            </Toggler>
+            <Content>
+                <BSNav MarginEnd="Margins.Auto" MarginBottom="Margins.Small" Class="mb-lg-0">
+                    <BSNavItem Url="">Home</BSNavItem>
+                    <BSNavItem Url="/fundementals">Fundementals</BSNavItem>
+                    <BSNavItem Url="/hooks">Hooks</BSNavItem>
+                    <BSNavItem Url="/helpers">Helpers</BSNavItem>
+                </BSNav>
+            </Content>
+        </BSCollapse>
+    </BSContainer>
+</BSNavbar>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
+<main>
+    <article>
+        <BSContainer>
             @Body
-        </article>
-    </main>
-</div>
+        </BSContainer>
+    </article>
+</main>
