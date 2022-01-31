@@ -1,13 +1,41 @@
-﻿@page "/fetchdata"
+﻿@page "/helpers"
 
-<PageTitle>Weather forecast</PageTitle>
+<PageTitle>Blazor Hooked - Helpers</PageTitle>
 
 @using Demo.Data
 @inject WeatherForecastService ForecastService
 
-<h1>Weather forecast</h1>
+<h1>Loader</h1>
 
-<p>This component demonstrates fetching data from a service.</p>
+<p>A common use for a reducer is to track an async request. In-fact is so common that to save you some more boiler plate, the <code>Loader</code> component is built in.</p>
+<pre><code class="language-razor">&lt;Loader Load=@@LoadData T="object"&gt;
+    &lt;Loading&gt;
+        &lt;p&gt;&lt;em&gt;Loading...&lt;/em&gt;&lt;/p&gt;
+    &lt;/Loading&gt;
+    &lt;Loaded Context="data"&gt;
+        @@data
+    &lt;/Loaded&gt;
+    &lt;Failed&gt;
+        &lt;p&gt;&lt;em&gt;Uhoh...&lt;/em&gt;&lt;/p&gt;
+    &lt;/Failed&gt;
+&lt;/Loader&gt;
+
+@@code {
+    private async Task LoadData(Dispatch dispatch)
+    {
+        try
+        {
+            var data = await SomeAsyncService();
+
+            dispatch(new LoaderActions.Loaded&lt;object&gt;(data));
+        }
+        catch (Exception ex)
+        {
+            dispatch(new LoaderActions.Failed(ex));
+        }
+    }
+}
+</code></pre>
 
 <Hook Context="Hook">
     @{
@@ -24,7 +52,7 @@
             <p><em>Loading...</em></p>
         </Loading>
         <Loaded Context="forecasts">
-            <table class="table">
+            <table class="table table-dark">
                 <thead>
                     <tr>
                         <th>Date</th>
