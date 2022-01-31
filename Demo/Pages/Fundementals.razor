@@ -1,0 +1,163 @@
+﻿@page "/fundementals"
+
+<h3>Hooks</h3>
+<p>Hooks are accessed via a <code>HookContext</code> which is provided by the <code>Hook</code> component. <code>HookContext</code> is scoped within a <code>Hook</code>, so you can have multiple <code>Hook</code>s within an application or even component if you really wanted too.</p>
+<pre><code class="language-razor">&lt;Hook&gt;
+    @@{
+        context.UseX();
+    }
+    &lt;div&gt;Hello&lt;/div&gt;
+&lt;/Hook&gt;
+</code></pre>
+<p>You can rename the context to something more helpful and/or to avoid collisions.</p>
+<pre><code class="language-razor">&lt;Hook Context="Hook"&gt;
+    @@{
+        Hook.UseX();
+    }
+    &lt;div&gt;Hello&lt;/div&gt;
+&lt;/Hook&gt;
+</code></pre>
+<h4><code>UseState</code></h4>
+<p><code>UseState</code> takes an initial value for the state and returns a tuple, the first item being the current state, and the second being a function to update the state AKA the <code>set</code> function. You should treat the state as immutable and only update it via the <code>set</code> function.</p>
+<p>You would typically only really use <code>UseState</code> for small value types. The most simple usecase would be a counter:</p>
+<pre><code class="language-razor">&lt;Hook&gt;
+    @@{
+        var (count, setCount) = context.UseState(0);
+    }
+
+    &lt;p&gt;Count: @@count&lt;/p&gt;
+    &lt;p&gt;
+        &lt;button @@onclick=@@(() =&gt; setCount(count + 1))&gt;Up&lt;/button&gt;
+        &lt;button @@onclick=@@(() =&gt; setCount(count - 1))&gt;Down&lt;/button&gt;
+    &lt;/p&gt;
+&lt;/Hook&gt;
+</code></pre>
+<Hook>
+    @{
+        var (count, setCount) = context.UseState(0);
+    }
+
+    <p>Count: @count</p>
+    <p>
+        <BSButton Color="BSColor.Primary" @onclick=@(() => setCount(count + 1))>Up</BSButton>
+        <BSButton Color="BSColor.Secondary" @onclick=@(() => setCount(count - 1))>Down</BSButton>
+    </p>
+</Hook>
+<h4><code>UseReducer</code></h4>
+<p>This is yet another Flux like thing, but Hooks make it so much simpler. It acts much like <code>UseState</code> but can handle more granular updates to the state via Actions. Like <code>UseState</code> it takes an initial state but also a Reducer. Again like <code>UseState</code> it returns the current state, but the <code>set</code> function is replaced by a Dispatcher.</p>
+<p>Lets define some of those words:</p>
+<ul>
+    <li><strong>Action</strong>: A command or event to inform the reducer that the state should be changed. These are usually best served by <code>record</code>s.</li>
+    <li><strong>Reducer</strong>: A function that takes the current state and an action and returns the new state. The framework doesn't care how you do the reduction; it could be a local function, a static method on a seperate class or a type that you inject. It's best practice, however, to not trigger things like http requests from the reducer, that's what Effects are for.</li>
+    <li><strong>Dispatcher</strong>: A function provided by the framework that you call with an Action to invoke the Reducer.</li>
+</ul>
+<p>Lets refactor our counter:</p>
+<pre><code class="language-razor">@@code {
+    public record CounterState(int Count);
+
+    public record Increment();
+    public record Decrement();
+
+    private CounterState Reducer(CounterState state, object action) =&gt; action switch
+    {
+        Increment =&gt; state with { Count = state.Count + 1 },
+        Decrement =&gt; state with { Count = state.Count - 1 },
+        _ =&gt; state,
+    };
+}
+
+&lt;Hook&gt;
+    @@{
+        var (state, dispatch) = context.UseReducer(Reducer, new CounterState(0));
+    }
+
+    &lt;p&gt;Count: @@state!.Count&lt;/p&gt;
+    &lt;p&gt;
+        &lt;button @@onclick=@@(() =&gt; dispatch(new Increment()))&gt;Up&lt;/button&gt;
+        &lt;button @@onclick=@@(() =&gt; dispatch(new Decrement()))&gt;Down&lt;/button&gt;
+    &lt;/p&gt;
+&lt;/Hook&gt;
+</code></pre>
+@code {
+    public record CounterState(int Count);
+
+    public record Increment();
+    public record Decrement();
+
+    private CounterState Reducer(CounterState state, object action) => action switch
+    {
+        Increment => state with { Count = state.Count + 1 },
+        Decrement => state with { Count = state.Count - 1 },
+        _ => state,
+    };
+}
+
+<Hook>
+    @{
+        var (state, dispatch) = context.UseReducer(Reducer, new CounterState(0));
+    }
+
+    <p>Count: @state!.Count</p>
+    <p>
+        <BSButton Color="BSColor.Primary" @onclick=@(() => dispatch(new Increment()))>Up</BSButton>
+        <BSButton Color="BSColor.Secondary" @onclick=@(() => dispatch(new Decrement()))>Down</BSButton>
+    </p>
+</Hook>
+<p>That's obviously a trivial example, but it gives you the idea of all you need. A common use for a reducer is to track an async request. In-fact is so common that to save you some more boiler plate, the <code>Loader</code> component is built in.</p>
+<pre><code class="language-razor">&lt;Loader Load=@@LoadData T="object"&gt;
+    &lt;Loading&gt;
+        &lt;p&gt;&lt;em&gt;Loading...&lt;/em&gt;&lt;/p&gt;
+    &lt;/Loading&gt;
+    &lt;Loaded Context="data"&gt;
+        @@data
+    &lt;/Loaded&gt;
+    &lt;Failed&gt;
+        &lt;p&gt;&lt;em&gt;Uhoh...&lt;/em&gt;&lt;/p&gt;
+    &lt;/Failed&gt;
+&lt;/Loader&gt;
+
+@@code {
+    private async Task LoadData(Dispatch dispatch)
+    {
+        try
+        {
+            var data = await SomeAsyncService();
+
+            dispatch(new LoaderActions.Loaded&lt;object&gt;(data));
+        }
+        catch (Exception ex)
+        {
+            dispatch(new LoaderActions.Failed(ex));
+        }
+    }
+}
+</code></pre>
+<h4><code>UseEffect</code></h4>
+<p>Effects are used to start background tasks and clean up after them when they're finished with.  The classic example would be to start listening on a websocket when the component is first rendered, then gracefully shutdown the connection when the component is unmounted and disposed.  If your Effect uses a variable like a value from <code>UseState</code> or a component paramenter and you'd like the Effect to re-run when that changes, you add that variable as a Dependency by letting <code>UseEffect</code> track it's value when you define the Effect.</p>
+<pre><code class="language-razor">@@inject WebSocketService UserNotificationService
+
+@@code {
+    [Parameter]
+    public Guid UserId { get; set; }
+
+    public Func&lt;Func&lt;Task&gt;&gt; ListenForUserNotifications(SetState&lt;string[]&gt; setUserMessages) =&gt; async () =&gt;
+    {
+        await UserNotificationService.StartListening(UserId, setUserMessages);
+
+        return async () =&gt; await UserNotificationService.StopListening(UserId);
+    };
+}
+
+&lt;Hook&gt;
+    @@{
+        var (messages, setMessages) = context.UseState(new string[0]);
+
+        context.UseEffect(ListenForUserNotifications(setMessages), new object[] { this.UserId });
+    }
+
+    @@foreach(var message in messages)
+    {
+        &lt;p&gt;@@message&lt;/p&gt;
+    }
+&lt;/Hook&gt;
+</code></pre>
