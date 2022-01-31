@@ -1,3 +1,5 @@
+@import '_content/BlazorStrap/BlazorStrap.bundle.scp.css';
+
 /* /Shared/MainLayout.razor.rz.scp.css */
 .page[b-o9nxkzaaaq] {
     position: relative;
@@ -78,68 +80,5 @@ main[b-o9nxkzaaaq] {
     .top-row[b-o9nxkzaaaq], article[b-o9nxkzaaaq] {
         padding-left: 2rem !important;
         padding-right: 1.5rem !important;
-    }
-}
-/* /Shared/NavMenu.razor.rz.scp.css */
-.navbar-toggler[b-w2k2l4j40t] {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.top-row[b-w2k2l4j40t] {
-    height: 3.5rem;
-    background-color: rgba(0,0,0,0.4);
-}
-
-.navbar-brand[b-w2k2l4j40t] {
-    font-size: 1.1rem;
-}
-
-.oi[b-w2k2l4j40t] {
-    width: 2rem;
-    font-size: 1.1rem;
-    vertical-align: text-top;
-    top: -2px;
-}
-
-.nav-item[b-w2k2l4j40t] {
-    font-size: 0.9rem;
-    padding-bottom: 0.5rem;
-}
-
-    .nav-item:first-of-type[b-w2k2l4j40t] {
-        padding-top: 1rem;
-    }
-
-    .nav-item:last-of-type[b-w2k2l4j40t] {
-        padding-bottom: 1rem;
-    }
-
-    .nav-item[b-w2k2l4j40t]  a {
-        color: #d7d7d7;
-        border-radius: 4px;
-        height: 3rem;
-        display: flex;
-        align-items: center;
-        line-height: 3rem;
-    }
-
-.nav-item[b-w2k2l4j40t]  a.active {
-    background-color: rgba(255,255,255,0.25);
-    color: white;
-}
-
-.nav-item[b-w2k2l4j40t]  a:hover {
-    background-color: rgba(255,255,255,0.1);
-    color: white;
-}
-
-@media (min-width: 641px) {
-    .navbar-toggler[b-w2k2l4j40t] {
-        display: none;
-    }
-
-    .collapse[b-w2k2l4j40t] {
-        /* Never collapse the sidebar for wide screens */
-        display: block;
     }
 }
