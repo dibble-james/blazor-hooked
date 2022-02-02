@@ -7,6 +7,12 @@ html, body {
     color: #eee;
 }
 
+article {
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    min-height: calc(100vh - 6.4rem - 48px);
+}
+
 .loading {
     min-height: 100vh;
     width: 100%;
