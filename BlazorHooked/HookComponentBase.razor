@@ -1,0 +1,24 @@
+﻿@code {
+    public HookComponentBase() => this.Hook = new HookContext(this.StateHasChanged);
+
+    protected HookContext Hook { get; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        await this.Hook.RunEffects();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        await this.Hook.RunEffects();
+    }
+
+    public ValueTask DisposeAsync()
+    {
+        return ((IAsyncDisposable)this.Hook).DisposeAsync();
+    }
+}

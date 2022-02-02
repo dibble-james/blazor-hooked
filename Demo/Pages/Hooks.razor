@@ -1,32 +1,60 @@
 ﻿@page "/hooks"
 <PageTitle>Blazor Hooked - Hooks</PageTitle>
 
-<h4><code>UseEffect</code></h4>
-<p>Effects are used to start background tasks and clean up after them when they're finished with.  The classic example would be to start listening on a websocket when the component is first rendered, then gracefully shutdown the connection when the component is unmounted and disposed.  If your Effect uses a variable like a value from <code>UseState</code> or a component paramenter and you'd like the Effect to re-run when that changes, you add that variable as a Dependency by letting <code>UseEffect</code> track it's value when you define the Effect.</p>
-<pre><code class="language-razor">@@inject WebSocketService UserNotificationService
+<h1>Hooks</h1>
+<p>
+    BlazorHooked provides equivilants for the basic hooks that React provides.  <code>UseContext</code> is mostly already provided by
+    <a rel="nofollow noreferrer" href="https://docs.microsoft.com/en-us/aspnet/core/blazor/components/cascading-values-and-parameters?view=aspnetcore-6.0"><code>CascadingParameters</code></a>.
+</p>
+<h4 id="use-state"><code>UseState</code></h4>
+<p>
+    <code>UseState</code> takes an initial value for the state and returns a tuple, the first item being the current
+    state, and the second being a function to update the state AKA the <code>set</code> function. You should treat the
+    state as immutable and only update it via the <code>set</code> function.
+</p>
+<p>
+    You would typically only really use <code>UseState</code> for small value types. The most simple usecase would be a
+    counter:
+</p>
+<iframe width="100%" height="500px"
+        src="https://blazorrepl.telerik.com/repl/embed/QwYwOFGY136M1mdQ13?editor=true&result=true&errorList=false"></iframe>
 
-@@code {
-    [Parameter]
-    public Guid UserId { get; set; }
+<h4 id="use-reducer"><code>UseReducer</code></h4>
+<p>
+    This is yet another Flux like thing, but Hooks make it so much simpler. It acts much like <code>UseState</code> but
+    can handle more granular updates to the state via Actions. Like <code>UseState</code> it takes an initial state but
+    also a Reducer. Again like <code>UseState</code> it returns the current state, but the <code>set</code> function is
+    replaced by a Dispatcher.
+</p>
+<p>Lets define some of those words:</p>
+<ul>
+    <li>
+        <strong>Action</strong>: A command or event to inform the reducer that the state should be changed. These are
+        usually best served by <code>record</code>s.
+    </li>
+    <li>
+        <strong>Reducer</strong>: A function that takes the current state and an action and returns the new state. The
+        framework doesn&rsquo;t care how you do the reduction; it could be a local function, a static method on a seperate
+        class or a type that you inject. It&rsquo;s best practice, however, to not trigger things like http requests from the
+        reducer, that&rsquo;s what Effects are for.
+    </li>
+    <li>
+        <strong>Dispatcher</strong>: A function provided by the framework that you call with an Action to invoke the
+        Reducer.
+    </li>
+</ul>
+<p>Lets refactor our counter:</p>
+<iframe width="100%" height="500px"
+        src="https://blazorrepl.telerik.com/repl/embed/QmaGulwk16cO7Rok32?editor=true&result=true&errorList=false"></iframe>
+<p>It&rsquo;s a slightly trivial example</p>
 
-    public Func&lt;Func&lt;Task&gt;&gt; ListenForUserNotifications(SetState&lt;string[]&gt; setUserMessages) =&gt; async () =&gt;
-    {
-        await UserNotificationService.StartListening(UserId, setUserMessages);
-
-        return async () =&gt; await UserNotificationService.StopListening(UserId);
-    };
-}
-
-&lt;Hook&gt;
-    @@{
-        var (messages, setMessages) = context.UseState(new string[0]);
-
-        context.UseEffect(ListenForUserNotifications(setMessages), new object[] { this.UserId });
-    }
-
-    @@foreach(var message in messages)
-    {
-        &lt;p&gt;@@message&lt;/p&gt;
-    }
-&lt;/Hook&gt;
-</code></pre>
+<h4 id="use-effect"><code>UseEffect</code></h4>
+<p>
+    Effects are used to start background tasks and clean up after them when they&rsquo;re finished with. The classic example
+    would be to start listening on a websocket when the component is first rendered, then gracefully shutdown the
+    connection when the component is unmounted and disposed. If your Effect uses a variable like a value from
+    <code>UseState</code> or a component paramenter and you&rsquo;d like the Effect to re-run when that changes, you add that
+    variable as a Dependency by letting <code>UseEffect</code> track it&rsquo;s value when you define the Effect.
+</p>
+<p>The example below, starts a counter on first render which can then be stopped and reset.</p>
+<iframe width="100%" height="500px" src="https://blazorrepl.telerik.com/repl/embed/QGkmEQcv24B8u8ox35?editor=true&result=true&errorList=false"></iframe>
