@@ -1,0 +1,31 @@
+﻿@attribute [CascadingTypeParameter(nameof(TStore))]
+@typeparam TContext where TContext : new()
+@typeparam TStore
+
+@code {
+    [Parameter]
+    public Func<TStore, TContext> MapStateToContext { get; init; } = _ => new TContext();
+
+    [Parameter]
+    public Func<TContext, DispatchAction, TContext>? MapDispatchToContext { get; init; }
+
+    [Parameter, EditorRequired]
+    public RenderFragment<TContext> ChildContent { get; init; } = null!;
+
+    [CascadingParameter]
+    private TStore Store { get; init; } = default!;
+
+    [CascadingParameter]
+    private Dispatch Dispatch { get; init; } = null!;
+}
+
+@{
+    var context = MapStateToContext(Store);
+
+    if (MapDispatchToContext is not null)
+    {
+        context = MapDispatchToContext(context, (action) => () => Dispatch(action));
+    }
+
+    @ChildContent(context)
+}

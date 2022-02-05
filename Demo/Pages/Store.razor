@@ -1,0 +1,53 @@
+﻿@page "/store"
+@using BlazorHooked
+
+@code {
+    public record UserState(string? Username, string? Email, bool LoggedIn);
+
+    public record State
+    {
+        public UserState User { get; init; } = new UserState(null, null, false);
+    }
+
+    private record Login();
+    private record Logout();
+
+    private Reducer<UserState> UserReducer() => (s, a) => a switch
+    {
+        Login l => s with { LoggedIn = true, Username = "John", Email = "John@test.com" },
+        Logout => s with { LoggedIn = false, Email = null, Username = null },
+        _ => s,
+    };
+
+    private Reducer<State> RootReducer(Reducer<State> reducer)
+        => reducer.CombineReducer((s, r) => s with { User = r(s.User) }, UserReducer());
+
+    private record TestContext
+    {
+        public UserState User { get; init; } = null!;
+
+        public Action ButtonAction { get; init; } = null!;
+
+        public Action Logout { get; init; } = null!;
+    }
+
+    private TestContext MapDispatchToContext(TestContext context, DispatchAction d) => context with
+    {
+        ButtonAction = context.User.LoggedIn ? d(new Logout()) : d(new Login()),
+    };
+}
+
+<ConnectStore RootReducer=@RootReducer InitialStateFactory=@(() => new State())>
+    <h1>Demo the store</h1>
+    <Connect TContext=TestContext TStore=State MapStateToContext=@(s => new TestContext { User = s.User }) MapDispatchToContext=@MapDispatchToContext>
+        <dl>
+            <dt>Username</dt>
+            <dd>@context.User?.Username</dd>
+            <dt>Email</dt>
+            <dd>@context.User?.Email</dd>
+        </dl>
+        <button class="btn btn-primary" @onclick=@context.ButtonAction>
+            @(context.User?.LoggedIn ?? false ? "Logout" : "Login")
+        </button>
+    </Connect>
+</ConnectStore>
