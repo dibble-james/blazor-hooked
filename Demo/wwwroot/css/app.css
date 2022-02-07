@@ -1,7 +1,5 @@
-﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
-
-html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+﻿html, body {
+    font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
     margin: 0;
     background: #181a1b;
     color: #eee;
@@ -10,7 +8,7 @@ html, body {
 article {
     margin-top: 1rem;
     margin-bottom: 1.5rem;
-    min-height: calc(100vh - 6.4rem - 48px);
+    min-height: calc(100vh - 5.5rem - 48px);
 }
 
 .loading {

@@ -10,26 +10,22 @@
         </p>
     </div>
 </div>
-<BSContainer>
-    <BSRow><br /></BSRow>
-    <BSRow>
-        <BSCol>
-            <h2>Get Started</h2>
-            <p>
-                Install from Nuget
-                <a href="https://www.nuget.org/packages/BlazorHooked/" rel="noopener noreferrer nofollow"><img src="https://badgen.net/nuget/v/BlazorHooked" alt="NuGet Status"></a>
-            </p>
-            <p>Add the obligitory <code>@@using BlazorHooked</code> statement to <code>_Imports.razor</code>.</p>
+<h2>Get Started</h2>
+<p>
+    Install from Nuget
+    <a href="https://www.nuget.org/packages/BlazorHooked/" rel="noopener noreferrer nofollow"><img src="https://badgen.net/nuget/v/BlazorHooked" alt="NuGet Status"></a>
+</p>
+<p>Add the obligitory <code>@@using BlazorHooked</code> statement to <code>_Imports.razor</code>.</p>
 
-            <h3>The <code>HookContext</code></h3>
-            <p>
-                Hooks are accessed via a <code>HookContext</code> which you can get one of two ways.
-            </p>
+<h3>The <code>HookContext</code></h3>
+<p>
+    Hooks are accessed via a <code>HookContext</code> which you can get one of two ways.
+</p>
 
-            <p>
-                Inherit from <code>HookComponentBase</code> in which case <code>this.Hook</code>
-                exposes a single <code>HookContext</code> for the child component.
-            </p>
+<p>
+    Inherit from <code>HookComponentBase</code> in which case <code>this.Hook</code>
+    exposes a single <code>HookContext</code> for the child component.
+</p>
 <pre><code class="language-razor">
 @@inherits HookComponentBase
 @@{
@@ -37,11 +33,11 @@
 }
 &lt;div&gt;Hello&lt;/div&gt;
 </code></pre>
-            <p>
-                Or use the <code>Hook</code> component, in which case the <code>HookContext</code> is scoped
-                within the <code>Hook</code>.  This gives more flexibility for you to inherit from other
-                base components and even to create multiple contexts within a component.
-            </p>
+<p>
+    Or use the <code>Hook</code> component, in which case the <code>HookContext</code> is scoped
+    within the <code>Hook</code>.  This gives more flexibility for you to inherit from other
+    base components and even to create multiple contexts within a component.
+</p>
 <pre>
 <code class="language-razor">
  &lt;Hook&gt;
@@ -52,7 +48,7 @@
 &lt;/Hook&gt;
 </code>
 </pre>
-            <p>You can rename the context to something more helpful and/or to avoid collisions.</p>
+<p>You can rename the context to something more helpful and/or to avoid collisions.</p>
 <pre><code class="language-razor">
 &lt;Hook Context="Hook"&gt;
     @@{
@@ -67,17 +63,14 @@
     &lt;div&gt;Hello Again&lt;/div&gt;
 &lt;/Hook&gt;
 </code></pre>
-            <p>
-                You&rsquo;ll find there are very few classes or interfaces to inherit or implement 
-                in BlazorHooked.  Actions and state in the examples are usually defined as records.
-                The more you embrace immutibility the easier the Model View Update pattern becomes
-                because you stop fighting the render loop and BlazorHooked is designed to foster
-                that by using functional constructs wherever possible.
-            </p>
-            <p>Click below to learn about the Hooks we currently provide.</p>
-            <p>
-                <BSLink href="hooks" IsButton="true" Color="BSColor.Primary">Hooks</BSLink>
-            </p>
-        </BSCol>
-    </BSRow>
-</BSContainer>
+<p>
+    You&rsquo;ll find there are very few classes or interfaces to inherit or implement
+    in BlazorHooked.  Actions and state in the examples are usually defined as records.
+    The more you embrace immutibility the easier the Model View Update pattern becomes
+    because you stop fighting the render loop and BlazorHooked is designed to foster
+    that by using functional constructs wherever possible.
+</p>
+<p>Click below to learn about the Hooks we currently provide.</p>
+<p>
+    <NavLink href="hooks" class="btn btn-primary">Hooks</NavLink>
+</p>

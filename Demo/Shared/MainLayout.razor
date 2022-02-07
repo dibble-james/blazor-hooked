@@ -1,33 +1,27 @@
 ﻿@inherits LayoutComponentBase
 
-<BSNavbar IsHeader="true" IsDark="true" IsStickyTop="true" style="background: #212529">
-    <BSContainer Container="Container.Fluid">
-        <BSNavbarBrand>Blazor Hooked</BSNavbarBrand>
-        <BSCollapse IsInNavbar="true">
-            <Toggler>
-                <BSNavbarToggle/>
-            </Toggler>
-            <Content>
-                <BSNav MarginEnd="Margins.Auto" MarginBottom="Margins.Small" Class="mb-lg-0">
-                    <BSNavItem Url="">Home</BSNavItem>
-                    <BSNavItem Url="hooks">Hooks</BSNavItem>
-                    <BSNavItem Url="helpers">Helpers</BSNavItem>
-                    <BSNavItem Url="https://github.com/dibble-james/blazor-hooked">GitHub</BSNavItem>
-                </BSNav>
-            </Content>
-        </BSCollapse>
-    </BSContainer>
-</BSNavbar>
+<HxNavbar ColorScheme="NavbarColorScheme.Dark" Color="ThemeColor.Primary">
+    <HxNavbarBrand>Blazor Hooked</HxNavbarBrand>
+    <HxNavbarToggler />
+    <HxNavbarCollapse>
+        <HxNav CssClass="me-auto mb-2 mb-lg-0">
+            <HxNavLink Href="">Home</HxNavLink>
+            <HxNavLink Href="hooks">Hooks</HxNavLink>
+            <HxNavLink Href="helpers">Helpers</HxNavLink>
+            <HxNavLink Href="store">Store</HxNavLink>
+            <HxNavLink Href="https://github.com/dibble-james/blazor-hooked">GitHub</HxNavLink>
+        </HxNav>
+    </HxNavbarCollapse>
+</HxNavbar>
 
 <main>
-    <article>
-        <BSContainer>
-            @Body
-        </BSContainer>
+    <article class="container">
+        @Body
     </article>
 </main>
-<BSNavbar IsDark="true" style="background: #212529">
-    <BSContainer Container="Container.Fluid">
+
+<HxNavbar Color="ThemeColor.Primary">
+    <div class="container">
         <small style="text-align: center; width: 100%; padding: 0.5rem">&copy; 2022 James Dibble</small>
-    </BSContainer>
-</BSNavbar>
+    </div>
+</HxNavbar>
