@@ -1,31 +1,34 @@
-﻿@attribute [CascadingTypeParameter(nameof(TStore))]
-@typeparam TContext where TContext : new()
-@typeparam TStore
+﻿@using Microsoft.AspNetCore.Components.Rendering
+@attribute [CascadingTypeParameter(nameof(TState))]
+@typeparam TProps where TProps : new()
+@typeparam TState
 
 @code {
-    [Parameter]
-    public Func<TStore, TContext> MapStateToContext { get; init; } = _ => new TContext();
-
-    [Parameter]
-    public Func<TContext, DispatchAction, TContext>? MapDispatchToContext { get; init; }
+    public delegate Action<Func<TProps, RenderFragment>> Connector(Func<TState, TProps> mapStateToProps, Func<TProps, DispatchAction, TProps>? mapDispatchToProps);
 
     [Parameter, EditorRequired]
-    public RenderFragment<TContext> ChildContent { get; init; } = null!;
+    public RenderFragment<Connector> ChildContent { get; init; } = null!;
 
     [CascadingParameter]
-    private TStore Store { get; init; } = default!;
+    private TState Store { get; init; } = default!;
 
     [CascadingParameter]
     private Dispatch Dispatch { get; init; } = null!;
-}
 
-@{
-    var context = MapStateToContext(Store);
-
-    if (MapDispatchToContext is not null)
+    public RenderFragment Map() => (builder) =>
     {
-        context = MapDispatchToContext(context, (action) => () => Dispatch(action));
-    }
+        ChildContent((Func<TState, TProps> mapStateToContext, Func<TProps, DispatchAction, TProps>? mapDispatchToProps) =>
+        {
+            var props = mapStateToContext(Store);
 
-    @ChildContent(context)
+            if (mapDispatchToProps is not null)
+            {
+                props = mapDispatchToProps(props, (action) => () => Dispatch(action));
+            }
+
+            return children => children(props)(builder);
+        })(builder);
+    };
 }
+
+@Map()

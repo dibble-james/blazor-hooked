@@ -1,14 +1,14 @@
 ﻿@inherits HookComponentBase
-@typeparam TStore
+@typeparam TState
 
 @code {
-    private static readonly Reducer<TStore> EmptyReducer = (state, _) => state;
+    private static readonly Reducer<TState> EmptyReducer = (state, _) => state;
 
     [Parameter, EditorRequired]
-    public Func<Reducer<TStore>, Reducer<TStore>> RootReducer { get; init; } = null!;
+    public Func<Reducer<TState>, Reducer<TState>> RootReducer { get; init; } = null!;
 
     [Parameter, EditorRequired]
-    public Func<TStore> InitialStateFactory { get; init; } = null!;
+    public Func<TState> InitialStateFactory { get; init; } = null!;
 
     [Parameter, EditorRequired]
     public RenderFragment ChildContent { get; init; } = null!;
