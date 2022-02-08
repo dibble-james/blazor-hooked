@@ -1,0 +1,63 @@
+﻿@using BlazorHooked
+@using System.Threading
+@using System.Threading.Tasks
+
+<Hook>
+    @{
+        var (state, dispatch) = context.UseReducer(Reducer, new State(new CancellationTokenSource(), 0, true, 0));
+
+        context.UseEffect(GenerateMessages(dispatch, state!), new object[] { state!.StartCount });
+
+        <p>
+            <button class="btn btn-primary" @onclick="() => dispatch(state!.IsRunning ? new Stop() : new Start())">
+                @(state!.IsRunning ? "Stop" : "Restart")
+            </button>
+            &nbsp;Count: @state.Count
+        </p>
+    }
+</Hook>
+
+@code {
+    public record State(CancellationTokenSource Cancel, int Count, bool IsRunning, int StartCount);
+
+    public record Start();
+    public record Stop();
+    public record NewMessage(int Count);
+
+    State Reducer(State state, object action)
+    {
+        if (action is Stop)
+        {
+            state.Cancel.Cancel();
+        }
+
+        return action switch
+        {
+            Start => state with { Count = 0, Cancel = new CancellationTokenSource(), StartCount = state.StartCount + 1, IsRunning = true },
+            NewMessage m => state with { Count = m.Count },
+            Stop => state with { IsRunning = false },
+            _ => state,
+        };
+    }
+
+    CallbackEffect GenerateMessages(Dispatch dispatcher, State state) => () =>
+    {
+        Task.Run(async () =>
+        {
+            var count = 0;
+
+            while (!state.Cancel.IsCancellationRequested)
+            {
+                dispatcher(new NewMessage(++count));
+                try
+                {
+                    await Task.Delay(1000, state.Cancel.Token);
+                }
+                catch (TaskCanceledException) { }
+            }
+        });
+
+        // Return a way to cancel the looping if the component is disposed
+        return () => state.Cancel.Cancel();
+    };
+}

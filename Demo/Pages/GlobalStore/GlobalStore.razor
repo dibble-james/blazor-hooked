@@ -1,0 +1,20 @@
+﻿@page "/store"
+
+<h1>Store</h1>
+<p>
+    Components are really good for self-containing state.  Most of the time, hooks are all you should
+    need, but sometimes you need state to be available at multiple points of the render tree.  Something
+    like the current logged-in user:
+</p>
+<CodeDemo Snippet=@typeof(BasicExample_snip) />
+<p>
+    Underneath, the global store is just a <code>UseReducer</code> hook, but the state and dispatcher
+    are available as CascadingParameters which are collected by the <code>Connect</code> component
+    for you to hook into particular elements of the store.  Reducers are exactly the same, but need to
+    be registered to the global state by combining reducers for each part of the store into a single reducer.
+</p>
+<p>
+    This is why you want to use a global store sparingly and why a lot of flux apps are hard to manage; the
+    store just gets massive with hundreds of reducers and actions if every component has it&rsquo;s own
+    little portion.
+</p>

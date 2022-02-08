@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Components.Rendering
+@attribute [CascadingTypeParameter(nameof(TState))]
+@typeparam TProps where TProps : new()
+@typeparam TState
+
+@code {
+    public delegate Action<Func<TProps, RenderFragment>> Connector(Func<TState, TProps> mapStateToProps, Func<TProps, DispatchAction, TProps>? mapDispatchToProps);
+
+    [Parameter, EditorRequired]
+    public RenderFragment<Connector> ChildContent { get; init; } = null!;
+
+    [CascadingParameter]
+    private TState Store { get; init; } = default!;
+
+    [CascadingParameter]
+    private Dispatch Dispatch { get; init; } = null!;
+
+    public RenderFragment Map() => (builder) =>
+    {
+        ChildContent((Func<TState, TProps> mapStateToContext, Func<TProps, DispatchAction, TProps>? mapDispatchToProps) =>
+        {
+            var props = mapStateToContext(Store);
+
+            if (mapDispatchToProps is not null)
+            {
+                props = mapDispatchToProps(props, (action) => () => Dispatch(action));
+            }
+
+            return children => children(props)(builder);
+        })(builder);
+    };
+}
+
+@Map()

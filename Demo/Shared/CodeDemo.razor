@@ -1,0 +1,22 @@
+﻿@inject IJSRuntime Javascript
+
+@code {
+    [Parameter]
+    public string Language { get; init; } = "razor";
+
+    [Parameter, EditorRequired]
+    public Type Snippet { get; init; } = null!;
+}
+
+<HxTabPanel InitialActiveTabId="code">
+    <HxTab Title="Code" Id="code">
+        <Content>
+            <Code Snippet=@Snippet />
+        </Content>
+    </HxTab>
+    <HxTab Title="Demo">
+        <Content>
+            <DynamicComponent Type=@Snippet />
+        </Content>
+    </HxTab>
+</HxTabPanel>

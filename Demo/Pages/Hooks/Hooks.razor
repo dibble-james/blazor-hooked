@@ -16,10 +16,7 @@
     You would typically only really use <code>UseState</code> for small value types. The most simple usecase would be a
     counter:
 </p>
-<p>
-    <iframe width="100%" height="500px"
-            src="https://blazorrepl.telerik.com/repl/embed/QwYwOFGY136M1mdQ13?editor=true&result=true&errorList=false"></iframe>
-</p>
+<CodeDemo Snippet=@typeof(UseState_snip) />
 
 <h4 id="use-reducer"><code>UseReducer</code></h4>
 <p>
@@ -46,10 +43,9 @@
     </li>
 </ul>
 <p>Lets refactor our counter:</p>
-<iframe width="100%" height="500px"
-        src="https://blazorrepl.telerik.com/repl/embed/QmaGulwk16cO7Rok32?editor=true&result=true&errorList=false"></iframe>
+<CodeDemo Snippet=@typeof(UseReducer_snip) />
 <p>
-    It&rsquo;s a slightly trivial example but it shows the concepts.  Checkout the <BSLink Url="helpers">Loader</BSLink> helper
+    It&rsquo;s a slightly trivial example but it shows the concepts.  Checkout the <NavLink href="helpers">Loader</NavLink> helper
     when you want to do async requests with a loading indicator.
 </p>
 
@@ -62,4 +58,4 @@
     variable as a Dependency by letting <code>UseEffect</code> track it&rsquo;s value when you define the Effect.
 </p>
 <p>The example below, starts a counter on first render which can then be stopped and reset.</p>
-<iframe width="100%" height="500px" src="https://blazorrepl.telerik.com/repl/embed/QGkmEQcv24B8u8ox35?editor=true&result=true&errorList=false"></iframe>
+<CodeDemo Snippet=@typeof(UseEffect_snip) />

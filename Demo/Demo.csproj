@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
@@ -7,13 +7,20 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="BlazorStrap" Version="5.0.*" />
+		<PackageReference Include="Havit.Blazor.Components.Web.Bootstrap" Version="2.1.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.1" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.161" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\BlazorHooked\BlazorHooked.csproj" />
 	</ItemGroup>
+
+	<Target Name="EmbedSnips" BeforeTargets="PrepareForBuild">
+		<ItemGroup>
+			<EmbeddedResource Include="**/*.snip.razor" />
+		</ItemGroup>
+	</Target>
 
 </Project>

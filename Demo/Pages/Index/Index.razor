@@ -1,0 +1,50 @@
+﻿@page "/"
+
+<PageTitle>Blazor Hooked</PageTitle>
+
+<p class="display-1 text-center">Blazor Hooked</p>
+<div class="card text-white bg-dark text-center">
+    <div class="card-body">
+        <p class="display-6">
+            A minimal boiler-plate, state management framework for Blazor that resembles React Hooks.
+        </p>
+    </div>
+</div>
+<p>
+    <h2 class="display-5">Get Started</h2>
+</p>
+<p>
+    Install from Nuget
+    <a href="https://www.nuget.org/packages/BlazorHooked/" rel="noopener noreferrer nofollow"><img src="https://badgen.net/nuget/v/BlazorHooked" alt="NuGet Status"></a>
+</p>
+<p>Add the obligitory <code>@@using BlazorHooked</code> statement to <code>_Imports.razor</code>.</p>
+
+<h3>The <code>HookContext</code></h3>
+<p>
+    Hooks are accessed via a <code>HookContext</code> which you can get one of two ways.
+</p>
+
+<p>
+    Inherit from <code>HookComponentBase</code> in which case <code>this.Hook</code>
+    exposes a single <code>HookContext</code> for the child component.
+</p>
+<Code Snippet=@typeof(BaseComponent_snip) />
+<p>
+    Or use the <code>Hook</code> component, in which case the <code>HookContext</code> is scoped
+    within the <code>Hook</code>.  This gives more flexibility for you to inherit from other
+    base components and even to create multiple contexts within a component.
+</p>
+<Code Snippet=@typeof(HookComponent_snip) />
+<p>You can rename the context to something more helpful and/or to avoid collisions.</p>
+<Code Snippet=@typeof(MultipleHooks_snip) />
+<p>
+    You&rsquo;ll find there are very few classes or interfaces to inherit or implement
+    in BlazorHooked.  Actions and state in the examples are usually defined as records.
+    The more you embrace immutibility the easier the Model View Update pattern becomes
+    because you stop fighting the render loop and BlazorHooked is designed to foster
+    that by using functional constructs wherever possible.
+</p>
+<p>Click below to learn about the Hooks we currently provide.</p>
+<p>
+    <NavLink href="hooks" class="btn btn-primary">Hooks</NavLink>
+</p>

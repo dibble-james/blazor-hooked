@@ -1,0 +1,25 @@
+﻿@inherits HookComponentBase
+@typeparam TState
+
+@code {
+    private static readonly Reducer<TState> EmptyReducer = (state, _) => state;
+
+    [Parameter, EditorRequired]
+    public Func<Reducer<TState>, Reducer<TState>> RootReducer { get; init; } = null!;
+
+    [Parameter, EditorRequired]
+    public Func<TState> InitialStateFactory { get; init; } = null!;
+
+    [Parameter, EditorRequired]
+    public RenderFragment ChildContent { get; init; } = null!;
+}
+
+@{
+    var (state, dispatch) = Hook.UseReducer(RootReducer!(EmptyReducer), InitialStateFactory!());
+
+    <CascadingValue Value=@state>
+        <CascadingValue Value=@dispatch>
+            @ChildContent
+        </CascadingValue>
+    </CascadingValue>
+}

@@ -1,0 +1,13 @@
+﻿@using BlazorHooked
+
+<Hook>
+    @{
+        var (count, setCount) = context.UseState(0);
+    }
+
+    <p>Count: @count</p>
+    <p>
+        <button class="btn btn-primary" @onclick=@(() => setCount(count + 1))>Up</button>
+        <button class="btn btn-secondary" @onclick=@(() => setCount(count - 1))>Down</button>
+    </p>
+</Hook>
