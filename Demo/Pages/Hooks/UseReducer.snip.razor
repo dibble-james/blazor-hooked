@@ -1,0 +1,26 @@
+﻿@using BlazorHooked
+@code {
+    public record CounterState(int Count);
+
+    public record Increment();
+    public record Decrement();
+
+    private CounterState Reducer(CounterState state, object action) => action switch
+    {
+        Increment => state with { Count = state.Count + 1 },
+        Decrement => state with { Count = state.Count - 1 },
+        _ => state,
+    };
+}
+
+<Hook>
+    @{
+        var (state, dispatch) = context.UseReducer(Reducer, new CounterState(0));
+    }
+
+    <p>Count: @state!.Count</p>
+    <p>
+        <button class="btn btn-primary" @onclick=@(() => dispatch(new Increment()))>Up</button>
+        <button class="btn btn-secondary" @onclick=@(() => dispatch(new Decrement()))>Down</button>
+    </p>
+</Hook>

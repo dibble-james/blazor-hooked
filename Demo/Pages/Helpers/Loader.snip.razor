@@ -1,0 +1,90 @@
+﻿@using BlazorHooked
+<Hook Context="Hook">
+    @{
+        var (date, setDate) = Hook.UseState(0);
+    }
+
+    <div>
+        <button class="btn btn-primary" @onclick=@(() => setDate(date - 1))>Previous Day</button>
+        <button class="btn btn-primary" @onclick=@(() => setDate(date + 1))>Next Day</button>
+    </div>
+
+    <Loader Load=@Loader(date) T="WeatherForecast[]" Dependencies=@(new object[] {date})>
+        <Loading>
+            <p><em>Loading...</em></p>
+        </Loading>
+        <Loaded Context="forecasts">
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Temp. (C)</th>
+                        <th>Temp. (F)</th>
+                        <th>Summary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var forecast in forecasts)
+                    {
+                        <tr>
+                            <td>@forecast.Date.ToShortDateString()</td>
+                            <td>@forecast.TemperatureC</td>
+                            <td>@forecast.TemperatureF</td>
+                            <td>@forecast.Summary</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </Loaded>
+        <Failed>
+            <p><em>Uhoh...</em></p>
+        </Failed>
+    </Loader>
+</Hook>
+
+@code {
+    private Action<Dispatch> Loader(int date) => async dispatch =>
+    {
+        try
+        {
+            var forcasts = await new WeatherForecastService().GetForecastAsync(DateTime.Now);
+
+            dispatch(new LoaderActions.Loaded<WeatherForecast[]>(forcasts));
+        }
+        catch (Exception ex)
+        {
+            dispatch(new LoaderActions.Failed(ex));
+        }
+    };
+
+    public class WeatherForecast
+    {
+        public DateTime Date { get; set; }
+
+        public int TemperatureC { get; set; }
+
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+
+        public string Summary { get; set; } = string.Empty;
+    }
+
+    public class WeatherForecastService
+    {
+        private static readonly string[] Summaries = new[]
+        {
+            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+        };
+
+        public async Task<WeatherForecast[]> GetForecastAsync(DateTime startDate)
+        {
+            await Task.Delay(500);
+
+            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            {
+                Date = startDate.AddDays(index),
+                TemperatureC = Random.Shared.Next(-20, 55),
+                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+            }).ToArray();
+        }
+    }
+}

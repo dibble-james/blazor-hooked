@@ -1,0 +1,15 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "provider": "cdnjs",
+      "library": "prism@9000.0.1",
+      "destination": "wwwroot/lib/prism/",
+      "files": [
+        "prism.min.js",
+        "themes/prism.min.css"
+      ]
+    }
+  ]
+}

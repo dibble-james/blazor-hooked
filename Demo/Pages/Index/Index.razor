@@ -5,12 +5,14 @@
 <p class="display-1 text-center">Blazor Hooked</p>
 <div class="card text-white bg-dark text-center">
     <div class="card-body">
-        <p class="lead">
+        <p class="display-6">
             A minimal boiler-plate, state management framework for Blazor that resembles React Hooks.
         </p>
     </div>
 </div>
-<h2>Get Started</h2>
+<p>
+    <h2 class="display-5">Get Started</h2>
+</p>
 <p>
     Install from Nuget
     <a href="https://www.nuget.org/packages/BlazorHooked/" rel="noopener noreferrer nofollow"><img src="https://badgen.net/nuget/v/BlazorHooked" alt="NuGet Status"></a>
@@ -26,43 +28,15 @@
     Inherit from <code>HookComponentBase</code> in which case <code>this.Hook</code>
     exposes a single <code>HookContext</code> for the child component.
 </p>
-<pre><code class="language-razor">
-@@inherits HookComponentBase
-@@{
-    this.Hook.UseX();
-}
-&lt;div&gt;Hello&lt;/div&gt;
-</code></pre>
+<Code Snippet=@typeof(BaseComponent_snip) />
 <p>
     Or use the <code>Hook</code> component, in which case the <code>HookContext</code> is scoped
     within the <code>Hook</code>.  This gives more flexibility for you to inherit from other
     base components and even to create multiple contexts within a component.
 </p>
-<pre>
-<code class="language-razor">
- &lt;Hook&gt;
-    @@{
-        context.UseX();
-    }
-    &lt;div&gt;Hello&lt;/div&gt;
-&lt;/Hook&gt;
-</code>
-</pre>
+<Code Snippet=@typeof(HookComponent_snip) />
 <p>You can rename the context to something more helpful and/or to avoid collisions.</p>
-<pre><code class="language-razor">
-&lt;Hook Context="Hook"&gt;
-    @@{
-        Hook.UseX();
-    }
-    &lt;div&gt;Hello&lt;/div&gt;
-&lt;/Hook&gt;
-&lt;Hook Context="Hook2"&gt;
-    @@{
-        Hook2.UseX();
-    }
-    &lt;div&gt;Hello Again&lt;/div&gt;
-&lt;/Hook&gt;
-</code></pre>
+<Code Snippet=@typeof(MultipleHooks_snip) />
 <p>
     You&rsquo;ll find there are very few classes or interfaces to inherit or implement
     in BlazorHooked.  Actions and state in the examples are usually defined as records.

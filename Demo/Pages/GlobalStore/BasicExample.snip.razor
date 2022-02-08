@@ -1,5 +1,4 @@
-﻿@page "/store"
-@using BlazorHooked
+﻿@using BlazorHooked
 
 @code {
     public record UserState(string? Username, string? Email, bool LoggedIn);
@@ -36,8 +35,9 @@
 }
 
 <ConnectStore RootReducer=@RootReducer InitialStateFactory=@(() => new State())>
-    <h1>Demo the store</h1>
+    <p>Outside the store</p>
     <Connect TProps=Props TState=State Context="connect">
+        <p>In the store</p>
         @{
             connect(s => new Props { User = s.User }, MapDispatchToProps)(props =>
             {

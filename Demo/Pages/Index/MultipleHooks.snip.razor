@@ -1,0 +1,14 @@
+﻿<Hook Context="Hook">
+    @{
+        var (state, _) = Hook.UseState(0);
+    }
+
+    @state
+</Hook>
+<Hook Context="Hook2">
+    @{
+        var (state, _) = Hook2.UseState(1);
+    }
+
+    @state
+</Hook>

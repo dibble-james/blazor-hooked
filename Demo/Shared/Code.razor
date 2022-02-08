@@ -1,0 +1,34 @@
+﻿@inject IJSRuntime Javascript
+
+@code {
+    [Parameter]
+    public string Language { get; init; } = "razor";
+
+    [Parameter, EditorRequired]
+    public Type Snippet { get; init; } = null!;
+
+    private string? Content { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        base.OnParametersSet();
+
+        var resourceName = Snippet.FullName!.Replace("_snip", ".snip.razor");
+        using var stream = Snippet.Assembly.GetManifestResourceStream(resourceName);
+        using var content = new StreamReader(stream!);
+
+        Content = await content.ReadToEndAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        await Javascript.InvokeVoidAsync("highlightCode");
+    }
+}
+
+<pre>
+<code class=@($"language-{Language}")>
+    @Content
+</code>
+</pre>
