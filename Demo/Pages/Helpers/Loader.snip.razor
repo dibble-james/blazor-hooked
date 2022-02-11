@@ -43,19 +43,8 @@
 </Hook>
 
 @code {
-    private Action<Dispatch> Loader(int date) => async dispatch =>
-    {
-        try
-        {
-            var forcasts = await new WeatherForecastService().GetForecastAsync(DateTime.Now);
-
-            dispatch(new LoaderActions.Loaded<WeatherForecast[]>(forcasts));
-        }
-        catch (Exception ex)
-        {
-            dispatch(new LoaderActions.Failed(ex));
-        }
-    };
+    private Func<Task<WeatherForecast[]>> Loader(int date)
+        => () => new WeatherForecastService().GetForecastAsync(date);
 
     public class WeatherForecast
     {
@@ -75,9 +64,16 @@
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        public async Task<WeatherForecast[]> GetForecastAsync(DateTime startDate)
+        public async Task<WeatherForecast[]> GetForecastAsync(int offset)
         {
             await Task.Delay(500);
+
+            if (Random.Shared.Next(1, 9) % 3 == 0)
+            {
+                throw new Exception("Failed");
+            }
+
+            var startDate = DateTime.Now.AddDays(offset);
 
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
