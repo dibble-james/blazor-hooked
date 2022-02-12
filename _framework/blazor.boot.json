@@ -7,8 +7,8 @@
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "BlazorHooked.dll": "sha256-Czmh6MoVIhoUFcKGrvRH9dZ5KMZ2XPSwyLsXusel63w=",
-      "Demo.dll": "sha256-LPsUfbE5OuX0RE9LV8li3yY3IqRRfQx77XxbWJInrCE=",
+      "BlazorHooked.dll": "sha256-uFdnn9S8yg\/1\/xoRtYPzsWlnAqfzcr1VOpYQG8fmpIA=",
+      "Demo.dll": "sha256-6WJlHq48FuPCWajPuBZ14SIty0aeA3KuF1rIcFGyAUk=",
       "Havit.Blazor.Components.Web.Bootstrap.dll": "sha256-nAIAZ+DCJLUF70fN6Yzi8IYRGTlgb7i1hAz0MDVoJdk=",
       "Havit.Blazor.Components.Web.dll": "sha256-aPlauvaFc4BElHGGMDjHnZwBK4ESvl8ZcFiX\/FAmPnQ=",
       "Havit.Core.dll": "sha256-fhoNSpbg2UKjxUxjMSM1Lx\/7rGvuxIEjlNG+HtmcH98=",
@@ -49,7 +49,7 @@
       "System.Net.Mail.dll": "sha256-X6vdQ3A2gvvytPONGaTugQRLCUL\/7z4vNbduipHB7BE=",
       "System.Net.Primitives.dll": "sha256-3RNVSN6D+Tt2vWKZN5GFR7CrVVZCtKtqoEaiNsboZws=",
       "System.ObjectModel.dll": "sha256-cfHM5vOaVlQTBUtl8YT0gLCeKiTsJdRuqltUN4zNZ\/Y=",
-      "System.Private.CoreLib.dll": "sha256-\/ThblxQ7LRVCrwpqr6VbZoyosn+EGP3t0ChNhKT02J8=",
+      "System.Private.CoreLib.dll": "sha256-ACpFouoHENZYg3INf\/owo0eTSCX4bnm8SfCvnI66IJI=",
       "System.Private.Runtime.InteropServices.JavaScript.dll": "sha256-1f6HFQMuPeKegHIKvkcPw2RIYViLjckrlqUWeAMxGkE=",
       "System.Private.Uri.dll": "sha256-gFJP8GFAVrNRPbZENPyTRTaknAyI+ldV52ouVLLosyE=",
       "System.Runtime.CompilerServices.Unsafe.dll": "sha256-KwdHFKy9LFj6xfXZg8Wyi8jq3DQFNrVYYQW2\/YnUW8E=",

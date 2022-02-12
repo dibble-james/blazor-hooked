@@ -8,5 +8,4 @@ Prism.languages.clike = { comment: [{ pattern: /(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/
 
 window.highlightCode = function() {
     Prism.highlightAll();
-    console.log('highlighting')
 }
