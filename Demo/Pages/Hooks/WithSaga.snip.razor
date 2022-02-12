@@ -1,0 +1,31 @@
+﻿@using BlazorHooked
+@code {
+    public record CounterState(int Count, string? Message);
+
+    public record Increment();
+    public record Decrement();
+    public record SetMessage(string Message);
+
+    private CounterState Reducer(CounterState state, object action) => action switch
+    {
+        Increment => state with { Count = state.Count + 1 },
+        Decrement => state with { Count = state.Count - 1 },
+        SetMessage m => state with { Message = m.Message },
+        _ => state,
+    };
+}
+
+<Hook>
+    @{
+        var (state, dispatch) = context.UseReducer(Reducer, new CounterState(0, null))
+            .Subscribe<CounterState, Increment>((action, dispatch) => Task.Run(() => dispatch(new SetMessage("You incemented last time"))))
+            .Subscribe<CounterState, Decrement>((action, dispatch) => Task.Run(() => dispatch(new SetMessage("You decremented last time"))));
+    }
+
+    <p>Count: @state!.Count</p>
+    <p>
+        <button class="btn btn-primary" @onclick=@(() => dispatch(new Increment()))>Up</button>
+        <button class="btn btn-secondary" @onclick=@(() => dispatch(new Decrement()))>Down</button>
+    </p>
+    <p>Message: @state.Message</p>
+</Hook>

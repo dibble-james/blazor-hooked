@@ -1,9 +1,8 @@
-﻿@using OneOf
-@typeparam T
+﻿@typeparam T
 
 @code {
     [Parameter, EditorRequired]
-    public OneOf<Action<Dispatch>, Func<Dispatch, Task>>? Load { get; init; }
+    public Func<Task<T>>? Load { get; init; }
 
     [Parameter]
     public RenderFragment<bool>? Loading { get; init; }
@@ -20,19 +19,8 @@
 
 <Hook>
     @{
-        var (state, dispatch) = context.UseLoaderReducer<T>();
-        context.UseEffect(async () =>
-        {
-            dispatch(new LoaderActions.Load());
-            await this.Load!.Value.Match(
-                load =>
-                {
-                    load(dispatch);
-                    return Task.CompletedTask;
-                },
-                load => load(dispatch));
-
-        }, Dependencies ?? Array.Empty<object>());
+        var (state, dispatch) = context.UseLoaderReducer<T>(this.Load!);
+        context.UseEffect(() => dispatch(new LoaderActions.Load<T>()), Dependencies ?? Array.Empty<object>());
 
         if (state!.Loading && this.Loading is not null)
         {

@@ -18,3 +18,8 @@
     store just gets massive with hundreds of reducers and actions if every component has it&rsquo;s own
     little portion.
 </p>
+<p>
+    As we said earlier, the global store is just <code>UseReducer</code> so you can add dispatch middleware
+    like subscriptions and sagas too.  You add this via the <code>ConfigureDispatch</code> parameter.
+</p>
+<CodeDemo Snippet=@typeof(WithSagas_snip) />

@@ -5,6 +5,30 @@ Install from Nuget [![NuGet Status](https://badgen.net/nuget/v/BlazorHooked)](ht
 
 Add the obligitory `@@using BlazorHooked` statement to `_Imports.razor`.
 
+If you're intending on using a global store wrap your app in your `App.razor`.
+```razor
+@code {
+    public record AppState();
+
+    private Reducer<AppState> RootReducer(Reducer<AppState> reducer) => reducer;
+}
+
+<ConnectStore RootReducer=@RootReducer InitialStateFactory=@(() => new AppState())>
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <PageTitle>Not found</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <p role="alert">Sorry, there's nothing at this address.</p>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</ConnectStore>
+```
+
 ### The `HookContext`
 
 Hooks are accessed via a `HookContext` which you can get one of two ways.
@@ -32,7 +56,7 @@ you to inherit from other base components and even to create multiple contexts w
 
 You can rename the context to something more helpful and/or to avoid collisions.
 
-```
+```razor
 <Hook Context="Hook">
     @{
         var (state, _) = Hook.UseState(0);
