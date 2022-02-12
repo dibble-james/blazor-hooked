@@ -1,12 +1,11 @@
 ﻿namespace BlazorHooked;
 
 using System.Runtime.CompilerServices;
-using BlazorHooked.Sagas;
 
 public static class LoaderReducer
 {
     public static (LoaderState<T>? state, Dispatch dispatch) UseLoaderReducer<T>(this HookContext context, Func<Task<T>> loader, [CallerLineNumber] int caller = 0)
-        => context.UseReducer(Reducer, new LoaderState<T>(false, false, default, null), caller).WithSaga(Saga(loader));
+        => context.UseReducer(Reducer, new LoaderState<T>(false, false, default, null), caller).Subscribe(Saga(loader));
 
     private static LoaderState<T> Reducer<T>(LoaderState<T> state, object action) => action switch
     {

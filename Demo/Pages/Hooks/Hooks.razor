@@ -59,3 +59,11 @@
 </p>
 <p>The example below, starts a counter on first render which can then be stopped and reset.</p>
 <CodeDemo Snippet=@typeof(UseEffect_snip) />
+
+<h4 id="subscribe"><code>Subscribe</code></h4>
+<p>
+    <code>Subscribe</code> decorates the dispatcher with a function to call if a particular action is dispatched so that you
+    can run a task.  These are sometimes refered to as a Saga.  A saga can be used to orchestrate something in the background
+    and dispatch further actions.
+</p>
+<CodeDemo Snippet=@typeof(WithSaga_snip) />

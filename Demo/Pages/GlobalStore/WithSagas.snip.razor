@@ -1,0 +1,75 @@
+﻿@using BlazorHooked
+
+@code {
+    public record UserState(string? Username, string? Email, bool LoggedIn);
+
+    public record State
+    {
+        public UserState User { get; init; } = new UserState(null, null, false);
+
+        public DateTime LastLogin { get; init; }
+    }
+
+    private record Login();
+    private record Logout();
+    private record LastLogin(DateTime When);
+
+    private Reducer<UserState> UserReducer() => (s, a) => a switch
+    {
+        Login l => s with { LoggedIn = true, Username = "John", Email = "John@test.com" },
+        Logout => s with { LoggedIn = false, Email = null, Username = null },
+        _ => s,
+    };
+
+    private Reducer<State> LastLoginReducer() => (s, a) => a switch
+    {
+        LastLogin l => s with { LastLogin = l.When },
+        _ => s,
+    };
+
+    private Reducer<State> RootReducer(Reducer<State> reducer)
+        => reducer.CombineReducer((s, r) => s with { User = r(s.User) }, UserReducer())
+                  .CombineReducer((s, r) => r(s), LastLoginReducer());
+
+    private record Props
+    {
+        public UserState User { get; init; } = null!;
+
+        public Action ButtonAction { get; init; } = null!;
+
+        public DateTime LastLogin { get; init; }
+    }
+
+    private Props MapDispatchToProps(Props context, DispatchAction d) => context with
+    {
+        ButtonAction = context.User.LoggedIn ? d(new Logout()) : d(new Login()),
+    };
+
+    private (State, Dispatch) ConfigureDispatch(ValueTuple<State, Dispatch> reducer)
+    {
+        return reducer.Subscribe<State, Login>((action, dispatch) => Task.Run(() => dispatch(new LastLogin(DateTime.Now))));
+    }
+}
+
+<ConnectStore RootReducer=@RootReducer InitialStateFactory=@(() => new State()) ConfigureDispatch=@ConfigureDispatch>
+    <Connect TProps=Props TState=State Context="connect">
+        @{
+            connect(s => new Props { User = s.User, LastLogin = s.LastLogin }, MapDispatchToProps)(props =>
+            {
+                return @<div>
+                    <dl>
+                        <dt>Username</dt>
+                        <dd>@props.User?.Username</dd>
+                        <dt>Email</dt>
+                        <dd>@props.User?.Email</dd>
+                        <dt>Last Login</dt>
+                        <dd>@props.LastLogin</dd>
+                    </dl>
+                    <button class="btn btn-primary" @onclick=@props.ButtonAction>
+                        @(props.User?.LoggedIn ?? false ? "Logout" : "Login")
+                    </button>
+                </div>;
+            });
+        }
+    </Connect>
+</ConnectStore>
