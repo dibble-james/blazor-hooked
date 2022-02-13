@@ -8,7 +8,7 @@
   "resources": {
     "assembly": {
       "BlazorHooked.dll": "sha256-uFdnn9S8yg\/1\/xoRtYPzsWlnAqfzcr1VOpYQG8fmpIA=",
-      "Demo.dll": "sha256-mOl9u\/iJOCPmdnqtG9+s1sfpajAuLW8Nr1LJMpDhy\/8=",
+      "Demo.dll": "sha256-B9oGGhtn2zeL1zOZS2hHxssHz7lTJhy5lpH8GYro+i8=",
       "Havit.Blazor.Components.Web.Bootstrap.dll": "sha256-nAIAZ+DCJLUF70fN6Yzi8IYRGTlgb7i1hAz0MDVoJdk=",
       "Havit.Blazor.Components.Web.dll": "sha256-aPlauvaFc4BElHGGMDjHnZwBK4ESvl8ZcFiX\/FAmPnQ=",
       "Havit.Core.dll": "sha256-fhoNSpbg2UKjxUxjMSM1Lx\/7rGvuxIEjlNG+HtmcH98=",
