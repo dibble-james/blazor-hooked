@@ -2,6 +2,7 @@
 
 	<PropertyGroup>
 		<PackageId>BlazorHooked</PackageId>
+		<PackageIcon>logo.png</PackageIcon>
 		<Authors>James Dibble</Authors>
 		<RepositoryUrl>https://github.com/dibble-james/blazor-hooked</RepositoryUrl>
 		<PackageTags>blazor redux flux hooks state-management</PackageTags>
@@ -18,6 +19,7 @@
 	<ItemGroup>
 		<None Include="..\README.md" Pack="true" PackagePath="\" />
 		<None Include="..\LICENSE" Pack="true" PackagePath="\" />
+		<None Include="..\assets\logo.png" Pack="true" PackagePath="\"/>
 		<SupportedPlatform Include="browser" />
 	</ItemGroup>
 
