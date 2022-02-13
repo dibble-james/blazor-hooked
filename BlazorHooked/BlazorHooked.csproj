@@ -25,6 +25,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.0" />
+		<PackageReference Include="oneof" Version="3.0.*" />
 	</ItemGroup>
 
 </Project>
