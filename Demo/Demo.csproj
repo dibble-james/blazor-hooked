@@ -17,6 +17,12 @@
 		<ProjectReference Include="..\BlazorHooked\BlazorHooked.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Content Update="wwwroot\logo.svg">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+
 	<Target Name="EmbedSnips" BeforeTargets="PrepareForBuild">
 		<ItemGroup>
 			<EmbeddedResource Include="**/*.snip.razor" />
