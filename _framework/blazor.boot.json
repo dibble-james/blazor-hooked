@@ -7,7 +7,7 @@
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "BlazorHooked.dll": "sha256-gtgmQBaBhCP0cmJDih3ok7LV9GhWG0gOqCG9FdkHZxg=",
+      "BlazorHooked.dll": "sha256-v3+s1Vpa3XX54Z2\/6rPaxtXV9v5bXYuYVHEMAEGKPCs=",
       "Demo.dll": "sha256-VdNaqkWgHfkUKg7Ue3ACdsZDgWaianZG8\/QBxj4Bnt4=",
       "Havit.Blazor.Components.Web.Bootstrap.dll": "sha256-nAIAZ+DCJLUF70fN6Yzi8IYRGTlgb7i1hAz0MDVoJdk=",
       "Havit.Blazor.Components.Web.dll": "sha256-aPlauvaFc4BElHGGMDjHnZwBK4ESvl8ZcFiX\/FAmPnQ=",
