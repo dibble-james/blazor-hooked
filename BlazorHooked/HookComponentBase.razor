@@ -1,5 +1,9 @@
 ﻿@code {
-    public HookComponentBase() => this.Hook = new HookContext(this.StateHasChanged);
+    public HookComponentBase()
+    {
+        this.Hook = new HookContext();
+        this.Hook.StateHasChanged += OnStateChanged;
+    }
 
     protected HookContext Hook { get; }
 
@@ -19,6 +23,9 @@
 
     public ValueTask DisposeAsync()
     {
+        this.Hook.StateHasChanged -= OnStateChanged;
         return ((IAsyncDisposable)this.Hook).DisposeAsync();
     }
+
+    private void OnStateChanged() => this.InvokeAsync(StateHasChanged);
 }

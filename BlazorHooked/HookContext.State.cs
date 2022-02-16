@@ -24,6 +24,6 @@ public partial class HookContext : IAsyncDisposable
     private Dispatch Dispatch<T>(int index, Reducer<T> reducer) => action =>
     {
         this.states[index] = reducer((T?)this.states[index]!, action);
-        this.stateHasChanged();
+        this.StateHasChanged?.Invoke();
     };
 }
