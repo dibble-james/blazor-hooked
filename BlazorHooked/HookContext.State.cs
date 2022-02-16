@@ -19,7 +19,11 @@ public partial class HookContext : IAsyncDisposable
     public (T? state, Dispatch dispatch) UseReducer<T>(Reducer<T> reducer, T initialState, [CallerLineNumber] int caller = 0)
         => ((T?)this.states.GetOrAdd(caller, initialState), this.Dispatch(caller, reducer));
 
-    private SetState<T> SetState<T>(int index) => newState => this.states[index] = newState;
+    private SetState<T> SetState<T>(int index) => newState =>
+    {
+        this.states[index] = newState;
+        this.StateHasChanged?.Invoke();
+    };
 
     private Dispatch Dispatch<T>(int index, Reducer<T> reducer) => action =>
     {
