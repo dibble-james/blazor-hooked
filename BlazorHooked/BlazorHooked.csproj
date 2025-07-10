@@ -10,7 +10,7 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
   		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<Description>A minimal boiler-plate, state management framework for Blazor that resembles React Hooks.</Description>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
@@ -24,7 +24,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.*" />
 		<PackageReference Include="oneof" Version="3.0.*" />
 	</ItemGroup>
 
