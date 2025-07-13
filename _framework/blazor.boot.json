@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "Demo",
   "resources": {
-    "hash": "sha256-SPjen6XesEhSPCI8rVcT/lYBR7JLK3fzRP9wXoXK9AQ=",
+    "hash": "sha256-DTSrLZ0HKopEr8GYq772v5OVgZxMA4PcfjeAdTpOBT0=",
     "fingerprinting": {
       "Havit.Blazor.Components.Web.2eynqhzw09.wasm": "Havit.Blazor.Components.Web.wasm",
       "Havit.Blazor.Components.Web.Bootstrap.1bqvgb127m.wasm": "Havit.Blazor.Components.Web.Bootstrap.wasm",
@@ -57,8 +57,8 @@
       "System.wznexm8bk2.wasm": "System.wasm",
       "netstandard.944s6dg4dn.wasm": "netstandard.wasm",
       "System.Private.CoreLib.7sn37iny87.wasm": "System.Private.CoreLib.wasm",
-      "BlazorHooked.i08g0hwadj.wasm": "BlazorHooked.wasm",
-      "Demo.4tojj5twhn.wasm": "Demo.wasm",
+      "BlazorHooked.yjlxgyx7d5.wasm": "BlazorHooked.wasm",
+      "Demo.ic9t5kt7yp.wasm": "Demo.wasm",
       "Havit.Blazor.Components.Web.Bootstrap.resources.ceirwz8wb7.wasm": "Havit.Blazor.Components.Web.Bootstrap.resources.wasm",
       "dotnet.js": "dotnet.js",
       "dotnet.native.st0ovrfdhi.js": "dotnet.native.js",
@@ -139,8 +139,8 @@
       "System.Threading.dl4x9gi7p6.wasm": "sha256-f6Hjqg8WRWzcv2OA+RKaqzMO1uGzaeqBIkdzKqmxPqM=",
       "System.wznexm8bk2.wasm": "sha256-/Imz/Enqa2AZc4T3k/CqtsM6674KRN9OUtvK4Nokhew=",
       "netstandard.944s6dg4dn.wasm": "sha256-2R1rop+NOM8RNohi1h9WJgFeEdcy5EK/Tn0yrNZVINs=",
-      "BlazorHooked.i08g0hwadj.wasm": "sha256-kvC5fQb03hMc+Vs3hxt42uvkun+wSqt4rH7mwGNbo+0=",
-      "Demo.4tojj5twhn.wasm": "sha256-qAT87nGdUQGQ/qXKCIxC4XvsBZTaeHhg7KaqZSOEbqM="
+      "BlazorHooked.yjlxgyx7d5.wasm": "sha256-omxO+EXMNeKOK4WOzV1aVj2I0SsD6pagxz+9+IMj6Ys=",
+      "Demo.ic9t5kt7yp.wasm": "sha256-klkI8iykmC9HHpQFap2puHu6KYaXXM2MMxIC5m+UugY="
     },
     "satelliteResources": {
       "cs": {
