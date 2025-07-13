@@ -6,7 +6,7 @@
     @{
         var (state, dispatch) = context.UseReducer(Reducer, new State(new CancellationTokenSource(), 0, true, 0));
 
-        context.UseEffect(GenerateMessages(dispatch, state!), new object[] { state!.StartCount });
+        context.UseEffect(GenerateMessages(dispatch, state!), new object?[] { state?.StartCount });
 
         <p>
             <button class="btn btn-primary" @onclick="() => dispatch(state!.IsRunning ? new Stop() : new Start())">

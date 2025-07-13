@@ -14,35 +14,35 @@ public delegate Task<Func<Task>> AsyncCallbackEffect();
 
 public partial class HookContext : IAsyncDisposable
 {
-    private readonly ConcurrentDictionary<int, object[]> effects = new();
+    private readonly ConcurrentDictionary<int, object?[]> effects = new();
     private readonly ConcurrentQueue<Func<Task>> effectQueue = new();
     private readonly ConcurrentDictionary<int, OneOf<Action, Func<Task>>> effectCallbacks = new();
 
     public void UseEffect(Effect effect, [CallerLineNumber] int caller = 0)
-        => this.UseEffectInternal(effect, Array.Empty<object>(), caller);
+        => this.UseEffectInternal(effect, Array.Empty<object?>(), caller);
 
-    public void UseEffect(Effect effect, object[] dependencies, [CallerLineNumber] int caller = 0)
+    public void UseEffect(Effect effect, object?[] dependencies, [CallerLineNumber] int caller = 0)
         => this.UseEffectInternal(effect, dependencies, caller);
 
     public void UseEffect(AsyncEffect effect, [CallerLineNumber] int caller = 0)
-        => this.UseEffectInternal(effect, Array.Empty<object>(), caller);
+        => this.UseEffectInternal(effect, Array.Empty<object?>(), caller);
 
-    public void UseEffect(AsyncEffect effect, object[] dependencies, [CallerLineNumber] int caller = 0)
+    public void UseEffect(AsyncEffect effect, object?[] dependencies, [CallerLineNumber] int caller = 0)
         => this.UseEffectInternal(effect, dependencies, caller);
 
     public void UseEffect(CallbackEffect effect, [CallerLineNumber] int caller = 0)
-        => this.UseEffectInternal(effect, Array.Empty<object>(), caller);
+        => this.UseEffectInternal(effect, Array.Empty<object?>(), caller);
 
-    public void UseEffect(CallbackEffect effect, object[] dependencies, [CallerLineNumber] int caller = 0)
+    public void UseEffect(CallbackEffect effect, object?[] dependencies, [CallerLineNumber] int caller = 0)
         => this.UseEffectInternal(effect, dependencies, caller);
 
     public void UseEffect(AsyncCallbackEffect effect, [CallerLineNumber] int caller = 0)
-        => this.UseEffectInternal(effect, Array.Empty<object>(), caller);
+        => this.UseEffectInternal(effect, Array.Empty<object?>(), caller);
 
-    public void UseEffect(AsyncCallbackEffect effect, object[] dependencies, [CallerLineNumber] int caller = 0)
+    public void UseEffect(AsyncCallbackEffect effect, object?[] dependencies, [CallerLineNumber] int caller = 0)
         => this.UseEffectInternal(effect, dependencies, caller);
 
-    private void UseEffectInternal(OneOf<Effect, AsyncEffect, CallbackEffect, AsyncCallbackEffect> effect, object[] dependecies, int caller)
+    private void UseEffectInternal(OneOf<Effect, AsyncEffect, CallbackEffect, AsyncCallbackEffect> effect, object?[] dependecies, int caller)
     {
         if (this.effects.TryAdd(caller, dependecies))
         {
@@ -53,7 +53,11 @@ public partial class HookContext : IAsyncDisposable
         if (this.effects.TryGetValue(caller, out var registeredDependencies))
         {
             // The dependencies have not been updated so no-op
-            if (dependecies.Length == registeredDependencies.Length && dependecies.Zip(registeredDependencies, (a, b) => a.Equals(b)).All(x => x))
+            if (dependecies.Length == registeredDependencies.Length && dependecies.Zip(registeredDependencies, (a, b) => a switch
+            {
+                null => b is null,
+                _ => a.Equals(b),
+            }).All(x => x))
             {
                 return;
             }
